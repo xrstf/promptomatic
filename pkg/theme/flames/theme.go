@@ -50,8 +50,8 @@ func (t *flamesTheme) whereami(e *sys.Environment) (*prompt.Segment, error) {
 
 	style := color.NewStyle().
 		SetBackground(color.Green).
-		SetForeground(color.HiWhite).
-		SetForegroundIf(color.HiRed, e.Elevated())
+		SetBackgroundIf(color.Red, e.Elevated()).
+		SetForeground(color.HiWhite)
 
 	text := "%m"
 	if s.Symbol != "" {
