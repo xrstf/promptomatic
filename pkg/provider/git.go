@@ -27,7 +27,8 @@ func NewGitStatus(e *sys.Environment) (*GitStatus, error) {
 
 	branch, err := sys.RunCommand("git", "rev-parse", "--abbrev-ref", "HEAD")
 	if err != nil {
-		return nil, err
+		// swallow this error because it might just be not a valid git repo (yet)
+		return nil, nil
 	}
 
 	changes, err := sys.RunCommand("git", "diff", "--name-only")
