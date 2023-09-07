@@ -72,11 +72,16 @@ func (t *flamesTheme) path(e *sys.Environment) (*prompt.Segment, error) {
 
 	style := color.NewStyle().
 		SetBackground(color.Color(237)).
+		SetBackgroundIf(color.Red, !s.Exists).
 		SetForeground(color.HiWhite)
 
 	text := s.Path
 	if s.Symbol != "" {
 		text = s.Symbol + " " + text
+	}
+
+	if !s.Exists {
+		text += "[?]"
 	}
 
 	return prompt.NewSegmentPtr(" "+text+" ", *style), nil

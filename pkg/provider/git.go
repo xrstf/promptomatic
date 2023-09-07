@@ -48,14 +48,19 @@ func NewGitStatus(e *sys.Environment) (*GitStatus, error) {
 	}, nil
 }
 
-func isGitRepository(pwd string) bool {
-	for pwd != "/" {
-		gitDir := filepath.Join(pwd, ".git")
+func isGitRepository(cwd string) bool {
+	// we could for whatever reason not determine our current working dir
+	if cwd == "" {
+		return false
+	}
+
+	for cwd != "/" {
+		gitDir := filepath.Join(cwd, ".git")
 		if _, err := os.Stat(gitDir); err == nil {
 			return true
 		}
 
-		pwd = filepath.Dir(pwd)
+		cwd = filepath.Dir(cwd)
 	}
 
 	return false

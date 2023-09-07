@@ -109,7 +109,14 @@ func autodetectTheme() theme.Theme {
 }
 
 func createEnvironment(cfg *config.Config) *sys.Environment {
-	wd, _ := os.Getwd()
+	wd, err := os.Getwd()
+	// An error can happen if the current directory of the terminal
+	// is deleted by another process. In this case, Getwd will return
+	// an error, but $PWD might still be set (though invalid in this
+	// case, of course).
+	if err != nil {
+		wd = os.Getenv("PWD")
+	}
 
 	env := &sys.Environment{
 		EffectiveUserID:  os.Geteuid(),
