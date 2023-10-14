@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"strings"
 
 	"go.xrstf.de/promptomatic/pkg/config"
 	"go.xrstf.de/promptomatic/pkg/sys"
@@ -20,19 +19,20 @@ import (
 	"github.com/spf13/pflag"
 )
 
-// Project build specific vars
+// These variables get set by ldflags during compilation.
 var (
-	Tag    string
-	Commit string
+	BuildTag    string
+	BuildCommit string
+	BuildDate   string // RFC3339 format ("2006-01-02T15:04:05Z07:00")
 )
 
 func printVersion() {
 	fmt.Printf(
-		"version: %s\nbuilt with: %s\ntag: %s\ncommit: %s\n",
-		strings.TrimPrefix(Tag, "v"),
+		"Promptomatic %s (%s), built with %s on %s\n",
+		BuildTag,
+		BuildCommit[:10],
 		runtime.Version(),
-		Tag,
-		Commit,
+		BuildDate,
 	)
 }
 
