@@ -15,7 +15,7 @@ func CommandExists(cmd string) bool {
 	return err == nil
 }
 
-func RunCommand(cmd string, args ...string) (string, error) {
+func RunCommand(cwd string, cmd string, args ...string) (string, error) {
 	command := exec.Command(cmd, args...)
 
 	var (
@@ -25,6 +25,10 @@ func RunCommand(cmd string, args ...string) (string, error) {
 
 	command.Stdout = &stdout
 	command.Stderr = &stderr
+
+	if cwd != "" {
+		command.Dir = cwd
+	}
 
 	if err := command.Run(); err != nil {
 		return "", errors.New(strings.TrimSpace(stderr.String()))
