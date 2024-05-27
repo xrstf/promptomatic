@@ -19,6 +19,14 @@ default: build
 build:
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ .
 
+.PHONY: install
+install:
+	go install $(GO_BUILD_FLAGS) .
+
+.PHONY: sysinstall
+sysinstall: build
+	sudo mv _build/promptomatic /usr/local/bin/
+
 .PHONY: test
 test:
 	CGO_ENABLED=1 go test $(GO_TEST_FLAGS) ./...
@@ -30,11 +38,3 @@ clean:
 .PHONY: lint
 lint:
 	golangci-lint run ./...
-
-.PHONY: install
-install:
-	go install
-
-.PHONY: sysinstall
-sysinstall: build
-	sudo mv _build/promptomatic /usr/local/bin/

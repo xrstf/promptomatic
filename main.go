@@ -9,14 +9,14 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/spf13/pflag"
+
 	"go.xrstf.de/promptomatic/pkg/config"
 	"go.xrstf.de/promptomatic/pkg/sys"
 	"go.xrstf.de/promptomatic/pkg/theme"
 	"go.xrstf.de/promptomatic/pkg/theme/flames"
 	"go.xrstf.de/promptomatic/pkg/theme/simple"
 	"go.xrstf.de/promptomatic/pkg/theme/zsh"
-
-	"github.com/spf13/pflag"
 )
 
 // These variables get set by ldflags during compilation.
@@ -27,13 +27,19 @@ var (
 )
 
 func printVersion() {
-	fmt.Printf(
-		"Promptomatic %s (%s), built with %s on %s\n",
-		BuildTag,
-		BuildCommit[:10],
-		runtime.Version(),
-		BuildDate,
-	)
+	// handle empty values in case `go install` was used
+	if BuildCommit == "" {
+		fmt.Printf("Promptomatic dev, built with %s\n",
+			runtime.Version(),
+		)
+	} else {
+		fmt.Printf("Promptomatic %s (%s), built with %s on %s\n",
+			BuildTag,
+			BuildCommit[:10],
+			runtime.Version(),
+			BuildDate,
+		)
+	}
 }
 
 type options struct {

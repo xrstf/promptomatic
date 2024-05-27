@@ -6,7 +6,9 @@ package provider
 import (
 	"os"
 	"path/filepath"
+	"slices"
 
+	"go.xrstf.de/promptomatic/pkg/config"
 	"go.xrstf.de/promptomatic/pkg/sys"
 )
 
@@ -23,6 +25,10 @@ func NewGitStatus(e *sys.Environment) (*GitStatus, error) {
 
 	repoRoot := getGitWorkingCopyRoot(e.WorkingDirectory)
 	if repoRoot == "" {
+		return nil, nil
+	}
+
+	if isSkipped(e.Config, repoRoot) {
 		return nil, nil
 	}
 
@@ -47,6 +53,10 @@ func NewGitStatus(e *sys.Environment) (*GitStatus, error) {
 		Dirty:         changes != "" || staged != "",
 		StagedChanges: staged != "",
 	}, nil
+}
+
+func isSkipped(cfg *config.Config, dir string) bool {
+	return slices.Contains(cfg.Git.SkipDirectories, dir)
 }
 
 func getGitWorkingCopyRoot(cwd string) string {

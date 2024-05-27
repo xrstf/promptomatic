@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Christoph Mewes
+# SPDX-License-Identifier: MIT
+
 builds:
   - env:
       # goreleaser does not work with CGO, it could also complicate
@@ -27,6 +30,9 @@ archives:
   - format: tar.gz
     name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
     wrap_in_directory: true
-    strip_parent_binary_folder: true
+    strip_binary_directory: true
+    files:
+      - LICENSE
+      - README.md
 checksum:
   disable: true

@@ -13,8 +13,13 @@ import (
 )
 
 type Config struct {
-	Theme      string `yaml:"theme"`
-	HostSymbol string `yaml:"hostSymbol"`
+	Theme      string    `yaml:"theme"`
+	HostSymbol string    `yaml:"hostSymbol"`
+	Git        GitConfig `yaml:"git"`
+}
+
+type GitConfig struct {
+	SkipDirectories []string `yaml:"skipDirectories"`
 }
 
 func Load(filename string) (*Config, error) {
